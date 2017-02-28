@@ -1,0 +1,25 @@
+{
+  "name": "todo-mvc",
+  "version": "1.0.0",
+  "description": "Test Application",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --display-error-details",
+    "start": "webpack-dev-server"
+  },
+  "author": "Vitalii",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
+    "css-loader": "^0.26.1",
+    "extract-text-webpack-plugin": "^2.0.0-rc.3",
+    "style-loader": "^0.13.1"
+  }
+}
