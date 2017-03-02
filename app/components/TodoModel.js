@@ -16,6 +16,7 @@ function TodoModel(TodoListName) {
             [1488311266000, "Покормить собаку Яффи", false],
             [1488311267000, "Покормить хомячков", false]
         );
+        
         this.save();
     }
 

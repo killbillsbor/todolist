@@ -2,14 +2,34 @@ var React = require('react'),
 	TodoListItem = require('./TodoListItem.jsx');
 
 import { TodoUtils } from './TodoUtils';
+import FlipMove from 'react-flip-move';
 
+// Variables for container animation:
+var appWrapper,
+	appContainer,
+	containerHeightBefore;
 
 var TodoList = React.createClass({
 	getInitialState: function() {
 		return {
 			editing: null,
+			showDetails: null,
 			newTodo: '',
 		};
+	},
+
+	componentWillUpdate: function() {
+		// Before rendering save previous height value:
+		appWrapper = document.getElementsByClassName("TodoApp__container_animation-wrapper")[0];
+		appContainer = document.getElementsByClassName("TodoApp__color")[0];
+		containerHeightBefore = appContainer.clientHeight;
+
+		appWrapper.setAttribute( "style", "height: " + containerHeightBefore + "px;" );
+	},
+
+	componentDidUpdate: function() {
+		// Then set a new value so it will be changed smoothly
+		appWrapper.setAttribute("style","height: " + appContainer.clientHeight + "px;");
 	},
 
 	createNewTask: function() {
@@ -32,7 +52,7 @@ var TodoList = React.createClass({
 		this.setState({
 			editing: null
 		});
-		this.createNewInput.focus();
+		//this.createNewInput.focus();
 	},
 
 	handleDelete: function(id) {
@@ -43,7 +63,6 @@ var TodoList = React.createClass({
 		this.setState({
 			editing: null
 		});
-		this.createNewInput.focus();
 	},
 
 	handleFocus: function(id, value) {
@@ -94,6 +113,18 @@ var TodoList = React.createClass({
 		this.createNewTask();
 	},
 
+	toggleDetails: function(id) {
+		if ( this.state.showDetails !== id ) {
+			this.setState({
+				showDetails: id,
+			});
+		} else {
+			this.setState({
+				showDetails: null,
+			});
+		}	
+	},
+
 	render: function() {
 		// Get todo list:
 		var shownTodoListItems = this.props.model.TodoList;
@@ -101,7 +132,8 @@ var TodoList = React.createClass({
 		// Prepare list of todo items:
 		// ES6 arrow function because it automatically preserve the current this context
 		var todoListItems = shownTodoListItems.map( (item, index) => {
-			let classListItem = (item[2] ? "todo-list__item todo-list__item_completed" : "todo-list__item" ),
+			let isShowDetails = ( index === this.state.showDetails ? true : false ),
+				classListItem = "todo-list__item" + ( item[2] ? " todo-list__item_completed" : "" ) + ( isShowDetails ? " todo-list__item_detailed" : "" ),
 				isEditing = ( index === this.state.editing ? true : false );
 
 			return (
@@ -118,6 +150,9 @@ var TodoList = React.createClass({
 					index={index}
 					item={item}
 					key={item[0]}
+
+					isShowDetails={isShowDetails}
+					toggleDetails={this.toggleDetails}
 				/>
 			);
 		});
@@ -126,7 +161,13 @@ var TodoList = React.createClass({
 		return (
 			<section>
 				<ul className="todo-list">
-					{todoListItems}
+					<FlipMove
+						duration={500} easing="ease"
+						enterAnimation="accordianVertical"
+						leaveAnimation="accordianVertical"
+					>
+						{todoListItems}
+					</FlipMove>
 				</ul>
 				<div className="todo-list__create-item">
 					<input

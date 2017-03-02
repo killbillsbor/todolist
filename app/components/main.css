@@ -41,16 +41,20 @@ h1 {
     box-sizing: border-box;
     display: table-cell;
     vertical-align: middle;
-
+}
+.TodoApp__container_animation-wrapper {
+    position: relative;
+    background: #fff;
+    transition: height 0.5s ease;
+    overflow: hidden;
+    box-shadow: 0 0 35px rgba(0,0,0,0.23);
 }
 .TodoApp__color {
-    background: #fff;
-    padding: 10px 20px 25px;
-    box-shadow: 0 0 35px rgba(0,0,0,0.23);
+    padding: 10px 20px 72px;
 }
 @media screen and (min-width: 640px) {
     .TodoApp__color {
-        padding: 25px 35px 35px;   
+        padding: 25px 35px 82px;   
     }
 }
 
@@ -70,7 +74,8 @@ ul.todo-list {
 
 .todo-list__item {
     border-bottom: 1px solid #ededee;
-    padding: 13px 15px 10px 10px;
+    padding: 13px 5px 10px 10px;
+    transition: background-color 0.5s ease;
 }
 .todo-list li:first-of-type {
     border-top: 1px solid #ededee;
@@ -98,35 +103,66 @@ ul.todo-list {
                 0 2px 1px 0 white inset;
 }
 
-.todo-list__remove-item {
+.todo-list__item_detailed {
+    background: #ededee;
+}
+.todo-list__details {
+    font-weight: 300;
+    padding: 12px 1px 0;
+    border-top: 1px solid lightgray;
+    margin: 8px 5px 0 0;
+}
+.todo-list__created-on {
+    margin-top: 5px;
+    opacity: 0.85;
+}
+.todo-list__created-on:hover {
+    opacity: 1;
+}
+
+.todo-list__controls {
     display: none;
-    width: 10px;
+    width: 18px;
     height: 18px;
-    background: white;
+    text-align: center;
+    margin-right: 4px;
     vertical-align: middle;
-    margin-right: 8px;
     opacity: 0.45;
     cursor: pointer;
 }
-.todo-list__item:hover .todo-list__remove-item {
+.todo-list__item:hover .todo-list__controls {
     display: inline-block;
 }
-.todo-list__remove-item:hover {
+.todo-list__controls:hover {
     opacity: 1;
 }
 
 input {
-    width: calc(100% - 45px);
+    width: calc(100% - 70px);
     border: 0;
     outline: none;
     font-size: 16px;
     background-color: transparent;
+    text-overflow: ellipsis;
+}
+.todo-list__create-item {
+    position: absolute;
+    bottom: 25px;
+    width: calc(100% - 40px);
+    /* 25px - container bottom padding */
+    /* 40px - right and left padding of container */
+}
+@media screen and (min-width: 640px) {
+    .todo-list__create-item {
+        bottom: 35px;
+        width: calc(100% - 70px);
+    }
 }
 
 .todo-list__create-item input {
     width: 100%;
     border-bottom: 1px solid #ededee;
-    padding: 13px 15px 10px 10px;
+    padding: 16px 15px 12px 10px;
 }
 
 /* Footer */

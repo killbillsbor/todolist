@@ -24,11 +24,13 @@ var model = new TodoModel('first-app');
 		render: function() {
 			return (
 				<div className="TodoApp__container">
-					<div className="TodoApp__color">
-						<Header />
-						<TodoList 
-							model={model}
-						/>
+					<div className="TodoApp__container_animation-wrapper">
+						<div className="TodoApp__color">
+							<Header />
+							<TodoList 
+								model={model}
+							/>
+						</div>
 					</div>
 				</div>
 			);
