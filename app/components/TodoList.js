@@ -1,7 +1,7 @@
 var React = require('react'),
 	TodoListItem = require('./TodoListItem.jsx');
 
-import { TodoUtils } from './TodoUtils';
+import {TodoUtils} from './TodoUtils';
 import FlipMove from 'react-flip-move';
 
 // Variables for container animation:
@@ -10,35 +10,34 @@ var appWrapper,
 	containerHeightBefore;
 
 var TodoList = React.createClass({
-	getInitialState: function() {
-		return {
-			editing: null,
-			showDetails: null,
-			newTodo: '',
-		};
+
+	componentDidMount: function() {
+		appWrapper = document.getElementsByClassName("TodoApp__container_animation-wrapper")[0];
+		appContainer = document.getElementsByClassName("todo-list")[0];
+		containerHeightBefore = appContainer.clientHeight;
+		appWrapper.setAttribute("style", "height: " + containerHeightBefore + "px;");
 	},
 
 	componentWillUpdate: function() {
 		// Before rendering save previous height value:
-		appWrapper = document.getElementsByClassName("TodoApp__container_animation-wrapper")[0];
-		appContainer = document.getElementsByClassName("TodoApp__color")[0];
 		containerHeightBefore = appContainer.clientHeight;
 
-		appWrapper.setAttribute( "style", "height: " + containerHeightBefore + "px;" );
+		appWrapper.setAttribute("style", "height: " + containerHeightBefore + "px;");
 	},
 
 	componentDidUpdate: function() {
 		// Then set a new value so it will be changed smoothly
-		appWrapper.setAttribute("style","height: " + appContainer.clientHeight + "px;");
+		appWrapper.setAttribute("style", "height: " + appContainer.clientHeight + "px;");
 	},
 
 	createNewTask: function() {
 		// Create new task:
-		var newValue = this.state.newTodo;
+		var newValue = this.props.newTodo;
 
 		if (newValue) {
 			this.props.model.addNewTodo(newValue);
-			this.setState({
+			this.props.changeRootState({
+				showDetails: null,
 				newTodo: ''
 			});
 		}
@@ -49,10 +48,9 @@ var TodoList = React.createClass({
 		this.props.model.toggle(this.props.model.TodoListName, id);
 
 		// Rerender:
-		this.setState({
+		this.props.changeRootState({
 			editing: null
 		});
-		//this.createNewInput.focus();
 	},
 
 	handleDelete: function(id) {
@@ -60,36 +58,35 @@ var TodoList = React.createClass({
 		this.props.model.remove(this.props.model.TodoListName, id);
 
 		// Rerender:
-		this.setState({
+		this.props.changeRootState({
 			editing: null
 		});
 	},
 
 	handleFocus: function(id, value) {
 		console.log("Editing id: " + id + ", text: " + value);
-		this.setState({
+		this.props.changeRootState({
 			editing: id,
 		});
 	},
 
 	handleChangeInput: function(event) {
 		// В React поле не может измениться независимо от свойства которое было ему присвоено
-		this.setState({
+		this.props.changeRootState({
 			newTodo: event.target.value
 		});
 	},
 
 	handleExitEditing: function(event) {
-
-		if ( event.target.value ) {
+		if (event.target.value) {
 			// Save to local storage when input loses its focus
-			this.props.model.edit(this.props.model.TodoListName, this.state.editing, event.target.value);
+			this.props.model.edit(this.props.model.TodoListName, this.props.editing, event.target.value);
 		} else {
 			// In case of zero length - remove Todo Item
-			this.props.model.remove( this.props.model.TodoListName, this.state.editing )
+			this.props.model.remove(this.props.model.TodoListName, this.props.editing)
 		}
 		
-		this.setState({
+		this.props.changeRootState({
 			editing: null
 		});
 	},
@@ -101,7 +98,7 @@ var TodoList = React.createClass({
 
 		event.preventDefault();
 
-		if (this.state.editing !== null) {
+		if (this.props.editing !== null) {
 			// Set focus to create new input (it includes saving)
 			this.createNewInput.focus();
 		} else {
@@ -114,12 +111,12 @@ var TodoList = React.createClass({
 	},
 
 	toggleDetails: function(id) {
-		if ( this.state.showDetails !== id ) {
-			this.setState({
+		if (this.props.showDetails !== id) {
+			this.props.changeRootState({
 				showDetails: id,
 			});
 		} else {
-			this.setState({
+			this.props.changeRootState({
 				showDetails: null,
 			});
 		}	
@@ -131,10 +128,10 @@ var TodoList = React.createClass({
 
 		// Prepare list of todo items:
 		// ES6 arrow function because it automatically preserve the current this context
-		var todoListItems = shownTodoListItems.map( (item, index) => {
-			let isShowDetails = ( index === this.state.showDetails ? true : false ),
-				classListItem = "todo-list__item" + ( item[2] ? " todo-list__item_completed" : "" ) + ( isShowDetails ? " todo-list__item_detailed" : "" ),
-				isEditing = ( index === this.state.editing ? true : false );
+		var todoListItems = shownTodoListItems.map((item, index) => {
+			let isShowDetails = (index === this.props.showDetails ? true : false),
+				classListItem = "todo-list__item" + (item[2] ? " todo-list__item_completed" : "") + (isShowDetails ? " todo-list__item_detailed" : ""),
+				isEditing = (index === this.props.editing ? true : false);
 
 			return (
 				<TodoListItem
@@ -159,8 +156,9 @@ var TodoList = React.createClass({
 
 		// Print Todo list with a create new form:
 		return (
-			<section>
-				<ul className="todo-list">
+			<section className={this.props.isDeleted ? "todo-list todo-list_deleted" : "todo-list" }>
+				<h1>{this.props.model.TodoListName} {this.props.isDeleted ? "(deleted)" : ""}</h1>
+				<ul>
 					<FlipMove
 						duration={500} easing="ease"
 						enterAnimation="accordianVertical"
@@ -176,7 +174,7 @@ var TodoList = React.createClass({
 						onChange={this.handleChangeInput}
 						onKeyDown={this.handleTodoKeyDown}
 						onBlur={this.handleBlur}
-						value={this.state.newTodo}
+						value={this.props.newTodo}
 						autoFocus={true}
 					/>
 				</div>
@@ -185,4 +183,4 @@ var TodoList = React.createClass({
 	}
 });
 
-export { TodoList };
+export {TodoList};

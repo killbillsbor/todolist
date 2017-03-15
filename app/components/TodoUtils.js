@@ -7,6 +7,8 @@ var TodoUtils = {
 TodoUtils.storage = function(TodoListName, data) {
     if (data) {
         return localStorage.setItem(TodoListName, JSON.stringify(data));
+    } else if (!TodoListName) {
+        return localStorage.key(0);
     }
     var existingData = localStorage.getItem(TodoListName);
     
@@ -16,7 +18,7 @@ TodoUtils.storage = function(TodoListName, data) {
 // Unix timestamp in ms to human readable format
 TodoUtils.timeConverter = function(timestamp) {
     let a = new Date(),
-        d = new Date(timestamp + a.getTimezoneOffset() * 60000),
+        d = new Date(timestamp + a.getTimezoneOffset()),
         //months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
         year = d.getFullYear(),
         //month = months[d.getMonth()],
