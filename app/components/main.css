@@ -280,7 +280,8 @@ h1 {
 .todo-list__controls {
     display: none;
     width: 18px;
-    height: 19px;
+    height: 18px;
+    line-height: 16px;
     text-align: center;
     margin-right: 4px;
     vertical-align: middle;

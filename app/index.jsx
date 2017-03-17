@@ -76,7 +76,8 @@ console.log(todoLists);
 				model = new TodoModel(listname, items);
 
 				this.setState({
-					selectedList: listname
+					selectedList: listname,
+					isDeletedCurrentList: false
 				});	
 			}
 		},
@@ -126,12 +127,17 @@ console.log(todoLists);
 
 		deleteList: function(index, listname) {
 			// Add list to temporary deleted lists:
-			let deletedLists = this.state.deletedTodoLists;
+			let deletedLists = this.state.deletedTodoLists,
+				isDeletedCurrentList = this.state.isDeletedCurrentList;
+				
+			if (!isDeletedCurrentList)
+				isDeletedCurrentList = (listname === this.state.selectedList ? true : false);
+			
 			deletedLists[listname] = TodoUtils.storage(listname);
 
 			this.setState({
 				deletedTodoLists: deletedLists,
-				isDeletedCurrentList: true
+				isDeletedCurrentList: isDeletedCurrentList
 			});	
 
 			console.log("State: " + this.state.deletedTodoLists);
