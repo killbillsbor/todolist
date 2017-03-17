@@ -15,10 +15,15 @@ var Sidebar = React.createClass({
             return false;
         }
 
+        if (event.currentTarget.type === 'input') {
+            console.log("Input selected, changing to li");
+            event = event.target.parentNode;
+        }
+
         if (this.props.selectedList === listname) {
             console.log("This list is already selected. Starting renaming");
             selectedListNameInput = event.currentTarget.getElementsByTagName('input')[0];
-            selectedListNameInput.disabled = false;
+            selectedListNameInput.readOnly = false;
             selectedListNameInput.focus();
 
         } else {
@@ -29,7 +34,7 @@ var Sidebar = React.createClass({
     },
 
     todoListRename: function(index, event) {
-        selectedListNameInput.disabled = true;
+        selectedListNameInput.readOnly = true;
 		this.props.renameList(index, event);
 	},
 
@@ -39,7 +44,7 @@ var Sidebar = React.createClass({
 		}
 
 		event.preventDefault();
-        event.target.disabled = true;
+        event.target.readOnly = true;
     },
 
     todoListDelete: function(index, listname) {
@@ -81,10 +86,11 @@ var Sidebar = React.createClass({
                 >
                     <input
                         defaultValue={listname}
+                        style={{pointerEvents: 'none'}}
                         onBlur={(event) => this.todoListRename(index, event)}
                         placeholder="Untitled"
                         onKeyDown={(event) => this.handleRenameKeyDown(index, event)}
-                        disabled={true}
+                        readOnly={true}
                     />
                     { !isDeleted ? <span className="todo-list__controls todo-list__delete" onClick={() => this.todoListDelete(index, listname)} title="Remove List">&#10005;</span> : <span className="todo-list__controls todo-list__restore" onClick={() => this.todoListRestore(listname)} title="Restore List">Restore</span> }
                 </li>

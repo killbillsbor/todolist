@@ -124,7 +124,7 @@ h1 {
     font-size: 14px;
     text-overflow: ellipsis;
 }
-.todo-list__name input:disabled {
+.todo-list__name input[readonly] {
     background-color: transparent;
 }
 .todo-list__name:hover,
@@ -196,13 +196,14 @@ h1 {
     font-size: 16px;
     display: inline-block;
     margin-right: 7px;
-    width: 15px;
-    height: 15px;
+    width: 17px;
+    height: 17px;
+    /*padding-left: 1px;*/
     box-sizing: border-box;
-    line-height: 13.9px; 
+    line-height: 14px; 
     color: rgba(246, 246, 246, 1);
     border-radius: 50%;
-    top: -1px;
+    /*top: -1px;*/
     position: relative;
     background: darkgray;
 }
