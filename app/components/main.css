@@ -96,7 +96,7 @@ h1 {
     overflow-y: scroll;
 }
 .todo-list__name {
-    padding: 7px 0px 7px 20px;
+    padding: 8px 0px 8px 20px;
     cursor: pointer;
     position: relative;
     transition: background-color 0.5s ease;
@@ -117,7 +117,7 @@ h1 {
 .todo-list__name input {
     width: calc(100% - 31px);
     margin-right: 5px;
-    height: 20px;
+    height: 22px;
     background-color: white;
     border: 0;
     outline: none;
@@ -147,7 +147,7 @@ h1 {
     background: transparent;
     border-radius: 16px;
     position: absolute;
-    top: 20px;
+    top: 22px;
     right: 10px;
 }
 
@@ -159,7 +159,7 @@ h1 {
     margin: -9px 0 0;
     background: transparent;
     position: absolute;
-    top: 20.4px;
+    top: 22.4px;
     right: 5px;
     width: 5px;
 }
@@ -198,12 +198,10 @@ h1 {
     margin-right: 7px;
     width: 17px;
     height: 17px;
-    /*padding-left: 1px;*/
     box-sizing: border-box;
     line-height: 14px; 
     color: rgba(246, 246, 246, 1);
     border-radius: 50%;
-    /*top: -1px;*/
     position: relative;
     background: darkgray;
 }
@@ -282,7 +280,7 @@ h1 {
 .todo-list__controls {
     display: none;
     width: 18px;
-    height: 18px;
+    height: 19px;
     text-align: center;
     margin-right: 4px;
     vertical-align: middle;
